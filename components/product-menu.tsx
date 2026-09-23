@@ -17,9 +17,9 @@ const groups = [
 ];
 
 const moreLinks = [
-  { label: "Pricing", href: `${MAIN_SITE}/pricing` }, { label: "Docs", href: DOCS_SITE },
+  { label: "Pricing", href: `${MAIN_SITE}/pricing` }, { label: "Docs", href: DOCS_SITE, external: true },
   { label: "Log in", href: `${MAIN_SITE}/login` }, { label: "Sign up", href: `${MAIN_SITE}/signup` },
-  { label: "Status", href: "https://status.vulnix.dev" }, { label: "Contact", href: "mailto:hello@vulnix.dev" },
+  { label: "Status", href: "https://status.vulnix.dev", external: true }, { label: "Contact", href: "mailto:hello@vulnix.dev" },
 ];
 
 export function ProductMenu({ inline = false, onNavigate }: { inline?: boolean; onNavigate?: () => void }) {
@@ -38,7 +38,7 @@ export function ProductMenu({ inline = false, onNavigate }: { inline?: boolean; 
       <button type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open}>Product <ChevronDown aria-hidden size={14} /></button>
       <div className="mobile-product-content" data-open={open} aria-hidden={!open}><div>
         {groups.map((group) => <section key={group.heading}><p>{group.heading}</p>{group.items.map(({ icon: Icon, title, subtitle, href }) => <a key={title} href={href} onClick={onNavigate}><span><Icon aria-hidden size={15} /></span><strong>{title}<small>{subtitle}</small></strong></a>)}</section>)}
-        <section><p>More</p>{moreLinks.filter((link) => !["Pricing", "Docs", "Log in"].includes(link.label)).map((link) => <a key={link.label} href={link.href} onClick={onNavigate}><strong>{link.label}</strong></a>)}</section>
+        <section><p>More</p>{moreLinks.filter((link) => !["Pricing", "Docs", "Log in"].includes(link.label)).map((link) => <a key={link.label} href={link.href} onClick={onNavigate} target={link.external ? "_blank" : undefined} rel={link.external ? "noopener noreferrer" : undefined}><strong>{link.label}</strong></a>)}</section>
       </div></div>
     </div>
   );
@@ -47,8 +47,25 @@ export function ProductMenu({ inline = false, onNavigate }: { inline?: boolean; 
     <div ref={menuRef} className="product-menu" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
       <button type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open}>Product <ChevronDown aria-hidden size={12} /></button>
       <div className="product-panel" data-open={open} aria-hidden={!open}>
-        <div className="product-groups">{groups.map((group) => <section key={group.heading}><p>{group.heading}</p><div>{group.items.map(({ icon: Icon, title, subtitle, href }) => <a key={title} href={href} onClick={() => setOpen(false)}><span><Icon aria-hidden size={16} /></span><strong>{title}<small>{subtitle}</small></strong></a>)}</div></section>)}</div>
-        <section className="product-more"><p>Get started</p>{moreLinks.map((link) => <a key={link.label} href={link.href} onClick={() => setOpen(false)}>{link.label}</a>)}</section>
+        <div className="product-groups">
+          {groups.map((group) => (
+            <div className="product-group" key={group.heading}>
+              <p>{group.heading}</p>
+              <div className="product-grid">
+                {group.items.map(({ icon: Icon, title, subtitle, href }) => (
+                  <a key={title} href={href} onClick={() => setOpen(false)}>
+                    <span className="product-icon"><Icon aria-hidden size={16} strokeWidth={1.75} /></span>
+                    <span className="product-copy"><span className="product-title">{title}</span><span className="product-subtitle">{subtitle}</span></span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="product-more">
+          <p>Get started</p>
+          <div>{moreLinks.map((link) => <a key={link.label} href={link.href} onClick={() => setOpen(false)} target={link.external ? "_blank" : undefined} rel={link.external ? "noopener noreferrer" : undefined}>{link.label}</a>)}</div>
+        </div>
       </div>
     </div>
   );

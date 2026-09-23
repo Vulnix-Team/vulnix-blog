@@ -2,6 +2,7 @@ import { Bug, FileText, Radar, Wrench } from "lucide-react";
 import Image from "next/image";
 
 import { DOCS_SITE, MAIN_SITE } from "@/lib/site";
+import { StatusPill } from "@/components/status-pill";
 
 const engines = [
   { icon: Radar, label: "Recon" },
@@ -18,8 +19,7 @@ const columns = [
   ] },
   { heading: "Resources", links: [
     { label: "Blog", href: "/" },
-    { label: "Docs", href: DOCS_SITE },
-    { label: "Status", href: "https://status.vulnix.dev" },
+    { label: "Docs", href: DOCS_SITE, external: true },
     { label: "Contact", href: "mailto:hello@vulnix.dev" },
   ] },
   { heading: "Get started", links: [
@@ -50,11 +50,11 @@ export function BlogFooter() {
           </div>
         </div>
         <div className="footer-links">
-          {columns.map((column) => <div key={column.heading}><h3>{column.heading}</h3>{column.links.map((link) => <a key={link.label} href={link.href}>{link.label}</a>)}</div>)}
+          {columns.map((column) => <div key={column.heading}><h3>{column.heading}</h3>{column.links.map((link) => <a key={link.label} href={link.href} target={link.external ? "_blank" : undefined} rel={link.external ? "noopener noreferrer" : undefined}>{link.label}</a>)}</div>)}
           <div><h3>Social</h3>{socialLinks.map((link) => <a key={link.label} href={link.href} target="_blank" rel="noreferrer"><Image src={`/social/${link.slug}.svg`} alt="" width={14} height={14} />{link.label}</a>)}</div>
         </div>
       </div>
-      <div className="footer-bottom"><span>&copy; {new Date().getFullYear()} Vulnix. All rights reserved.</span><div><a href={`${MAIN_SITE}/privacy-policy`}>Privacy</a><a href={`${MAIN_SITE}/terms-and-conditions`}>Terms</a><a className="status-link" href="https://status.vulnix.dev">System status</a></div></div>
+      <div className="footer-bottom"><span>&copy; {new Date().getFullYear()} Vulnix. All rights reserved.</span><div><a href={`${MAIN_SITE}/privacy-policy`}>Privacy</a><a href={`${MAIN_SITE}/terms-and-conditions`}>Terms</a><StatusPill /></div></div>
     </footer>
   );
 }

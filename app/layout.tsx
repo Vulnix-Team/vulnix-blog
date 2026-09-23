@@ -1,18 +1,33 @@
 import type { Metadata } from "next";
+import { Geist_Mono, Inter } from "next/font/google";
 
 import { BlogFooter } from "@/components/blog-footer";
 import { FooterRevealTrigger } from "@/components/footer-reveal-trigger";
 import { FooterWordmarkReveal } from "@/components/footer-wordmark-reveal";
-import { SiteHeader } from "@/components/site-header";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 import "./globals.css";
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const inter = Inter({
+  variable: "--font-marketing-body",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: "Vulnix Blog | Security field notes", template: "%s | Vulnix Blog" },
   description: SITE_DESCRIPTION,
-  alternates: { canonical: SITE_URL },
+  alternates: {
+    canonical: SITE_URL,
+    types: {
+      "application/rss+xml": [{ url: "/feed.xml", title: "Vulnix Blog RSS" }],
+    },
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -27,7 +42,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${geistMono.variable} ${inter.variable}`}
+      style={{ "--font-marketing-mono": "var(--font-geist-mono)" } as React.CSSProperties}
+    >
       <body>
         <script
           type="application/ld+json"
@@ -41,7 +60,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             }),
           }}
         />
-        <SiteHeader />
         <FooterWordmarkReveal />
         <div className="footer-reveal-page">
           <main>{children}</main>
