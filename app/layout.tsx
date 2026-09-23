@@ -4,7 +4,7 @@ import { Geist_Mono, Inter } from "next/font/google";
 import { BlogFooter } from "@/components/blog-footer";
 import { FooterRevealTrigger } from "@/components/footer-reveal-trigger";
 import { FooterWordmarkReveal } from "@/components/footer-wordmark-reveal";
-import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+import { MAIN_SITE, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 import "./globals.css";
 
@@ -18,10 +18,24 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+const SOCIAL_IMAGE_URL = `${SITE_URL}/opengraph-image.png`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: "Vulnix Blog | Security field notes", template: "%s | Vulnix Blog" },
   description: SITE_DESCRIPTION,
+  keywords: [
+    "Vulnix Blog",
+    "AI penetration testing",
+    "AI pentesting",
+    "continuous security testing",
+    "exploit validation",
+    "security fix validation",
+    "application security",
+  ],
+  authors: [{ name: "Vulnix Team", url: MAIN_SITE }],
+  creator: "Vulnix",
+  publisher: "Vulnix",
   alternates: {
     canonical: SITE_URL,
     types: {
@@ -35,8 +49,9 @@ export const metadata: Metadata = {
     title: "Vulnix Blog | Security field notes",
     description: SITE_DESCRIPTION,
     url: SITE_URL,
+    images: [{ url: SOCIAL_IMAGE_URL, alt: "Vulnix Blog" }],
   },
-  twitter: { card: "summary_large_image", title: "Vulnix Blog", description: SITE_DESCRIPTION },
+  twitter: { card: "summary_large_image", title: "Vulnix Blog", description: SITE_DESCRIPTION, images: [SOCIAL_IMAGE_URL] },
   robots: { index: true, follow: true },
 };
 
@@ -54,8 +69,36 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@graph": [
-                { "@type": "Organization", "@id": "https://vulnix.dev/#organization", name: "Vulnix", url: "https://vulnix.dev", logo: "https://vulnix.dev/vulnix-logo.png" },
-                { "@type": "Blog", "@id": `${SITE_URL}/#blog`, name: SITE_NAME, url: SITE_URL, description: SITE_DESCRIPTION, publisher: { "@id": "https://vulnix.dev/#organization" } },
+                {
+                  "@type": "Organization",
+                  "@id": `${MAIN_SITE}/#organization`,
+                  name: "Vulnix",
+                  url: MAIN_SITE,
+                  logo: `${MAIN_SITE}/vulnix-logo.png`,
+                  description: "Vulnix is an AI penetration testing platform with continuous exploit validation.",
+                  sameAs: ["https://docs.vulnix.dev", "https://status.vulnix.dev"],
+                  contactPoint: [
+                    { "@type": "ContactPoint", contactType: "sales", email: "hello@vulnix.dev" },
+                    { "@type": "ContactPoint", contactType: "customer support", email: "support@vulnix.dev" },
+                  ],
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": `${SITE_URL}/#website`,
+                  name: SITE_NAME,
+                  url: SITE_URL,
+                  description: SITE_DESCRIPTION,
+                  publisher: { "@id": `${MAIN_SITE}/#organization` },
+                },
+                {
+                  "@type": "Blog",
+                  "@id": `${SITE_URL}/#blog`,
+                  name: SITE_NAME,
+                  url: SITE_URL,
+                  description: SITE_DESCRIPTION,
+                  isPartOf: { "@id": `${SITE_URL}/#website` },
+                  publisher: { "@id": `${MAIN_SITE}/#organization` },
+                },
               ],
             }),
           }}

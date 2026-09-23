@@ -28,6 +28,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: post.title,
     description: post.description,
     keywords: post.keywords,
+    category: post.topic,
+    authors: [{ name: "Vulnix Team", url: MAIN_SITE }],
     alternates: { canonical: url },
     openGraph: { type: "article", url, title: post.title, description: post.description, publishedTime: post.publishedAt, modifiedTime: post.updatedAt, authors: ["Vulnix Team"], images: [{ url: image, alt: cover.alt }] },
     twitter: { card: "summary_large_image", title: post.title, description: post.description, images: [image] },
@@ -60,6 +62,40 @@ export default async function InsightPage({ params }: PageProps) {
   ]);
   const url = `${SITE_URL}/insights/${post.slug}`;
   const cover = getArticleCover(post.slug);
+  const image = `${SITE_URL}${cover.src}`;
+  const wordCount = post.content.trim().split(/\s+/).filter(Boolean).length;
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": `${url}#article`,
+        url,
+        headline: post.title,
+        description: post.description,
+        datePublished: post.publishedAt,
+        dateModified: post.updatedAt,
+        mainEntityOfPage: { "@type": "WebPage", "@id": url },
+        image: { "@type": "ImageObject", url: image, caption: cover.alt },
+        author: { "@id": "https://vulnix.dev/#organization" },
+        publisher: { "@id": "https://vulnix.dev/#organization" },
+        isPartOf: { "@id": `${SITE_URL}/#blog` },
+        articleSection: post.topic,
+        inLanguage: "en-US",
+        wordCount,
+        keywords: post.keywords.join(", "),
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${url}#breadcrumbs`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Vulnix Blog", item: SITE_URL },
+          { "@type": "ListItem", position: 2, name: post.topic, item: `${SITE_URL}/#${post.topic.toLowerCase().replace(/[^a-z0-9]+/g, "-")}` },
+          { "@type": "ListItem", position: 3, name: post.title, item: url },
+        ],
+      },
+    ],
+  };
 
   return (
     <>
@@ -96,12 +132,7 @@ export default async function InsightPage({ params }: PageProps) {
         <a className="cta-link" href={`${MAIN_SITE}/signup`}>Start a scoped trial <span aria-hidden>↗</span></a>
       </section>
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org", "@type": "BlogPosting", headline: post.title, description: post.description,
-        datePublished: post.publishedAt, dateModified: post.updatedAt, mainEntityOfPage: url, image: `${SITE_URL}${cover.src}`,
-        author: { "@type": "Organization", name: "Vulnix Team", url: MAIN_SITE },
-        publisher: { "@id": "https://vulnix.dev/#organization" }, isPartOf: { "@id": `${SITE_URL}/#blog` }, keywords: post.keywords.join(", "),
-      }) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
     </>
   );
 }
