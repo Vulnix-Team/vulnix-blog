@@ -1,6 +1,6 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { Rss, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { ArticleCard, type ArticleCardPost } from "@/components/article-card";
@@ -21,8 +21,13 @@ export function ArticleCatalog({ posts }: { posts: ArticleCardPost[] }) {
   return (
     <section className="article-catalog" aria-label="Article catalog">
       <div className="catalog-controls">
-        <div className="topic-list" aria-label="Filter articles by topic">
-          {topics.map((item) => <button key={item} type="button" aria-pressed={topic === item} onClick={() => setTopic(item)}>{item}</button>)}
+        <div className="catalog-topics">
+          <a className="feed-link" href="/feed.xml" aria-label="Subscribe to the Vulnix Blog RSS feed" title="Subscribe via RSS">
+            <Rss aria-hidden size={15} />
+          </a>
+          <div className="topic-list" aria-label="Filter articles by topic">
+            {topics.map((item) => <button key={item} type="button" aria-pressed={topic === item} onClick={() => setTopic(item)}>{item}</button>)}
+          </div>
         </div>
         <label className="search-field"><Search aria-hidden size={15} /><span className="sr-only">Search articles</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search articles" type="search" /></label>
       </div>

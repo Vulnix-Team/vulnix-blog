@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { ProductMenu } from "@/components/product-menu";
 import { MarketingCtaLink, MARKETING_CTA_OUTLINE } from "@/components/marketing-cta";
 import { DOCS_SITE, MAIN_SITE } from "@/lib/site";
+import { useLowPowerMode } from "@/lib/use-low-power-mode";
 
 const EASE = "cubic-bezier(0.22,1,0.36,1)";
 
@@ -13,12 +14,13 @@ const navLinks = [
   { label: "Pricing", href: `${MAIN_SITE}/pricing` },
   { label: "Compare", href: `${MAIN_SITE}/compare` },
   { label: "Docs", href: DOCS_SITE },
-  { label: "Blog", href: "/", current: true },
+  { label: "Blog", href: "/" },
 ];
 
 /** Standalone-repository port of the product marketing SiteHeader. */
 export function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const lowPower = useLowPowerMode();
 
   useEffect(() => {
     if (!mobileMenuOpen) return;
@@ -44,14 +46,14 @@ export function SiteHeader() {
   return (
     <header className="site-header">
       {mobileMenuOpen ? <button type="button" className="mobile-menu-scrim" aria-label="Close menu" onClick={() => setMobileMenuOpen(false)} /> : null}
-      <div className="nav-shell" style={{ transitionTimingFunction: EASE }}>
-        <Link prefetch={false} href="/" className="brand" aria-label="Vulnix Blog home">
+      <div className={`nav-shell${lowPower ? " low-power" : ""}`} style={{ transitionTimingFunction: EASE }}>
+        <a href={MAIN_SITE} className="brand" aria-label="Vulnix home">
           {/* eslint-disable-next-line @next/next/no-img-element -- canonical brand asset */}
           <img src="/vulnix-logo.svg" alt="Vulnix" loading="eager" />
-        </Link>
+        </a>
         <nav className="desktop-nav" aria-label="Primary navigation">
           <ProductMenu />
-          {navLinks.map((link) => link.current ? <Link prefetch={false} key={link.label} href={link.href} className="current">{link.label}</Link> : <a key={link.label} href={link.href}>{link.label}</a>)}
+          {navLinks.map((link) => link.href === "/" ? <Link prefetch={false} key={link.label} href={link.href}>{link.label}</Link> : <a key={link.label} href={link.href}>{link.label}</a>)}
         </nav>
         <div className="desktop-actions">
           <MarketingCtaLink href={`${MAIN_SITE}/login`} className={`nav-button ${MARKETING_CTA_OUTLINE.dark}`}>Log In</MarketingCtaLink>
@@ -62,7 +64,7 @@ export function SiteHeader() {
       {mobileMenuOpen ? (
         <div className="mobile-menu">
           <ProductMenu inline onNavigate={() => setMobileMenuOpen(false)} />
-          {navLinks.map((link) => link.current ? <Link prefetch={false} key={link.label} href={link.href} onClick={() => setMobileMenuOpen(false)}>{link.label}</Link> : <a key={link.label} href={link.href}>{link.label}</a>)}
+          {navLinks.map((link) => link.href === "/" ? <Link prefetch={false} key={link.label} href={link.href} onClick={() => setMobileMenuOpen(false)}>{link.label}</Link> : <a key={link.label} href={link.href}>{link.label}</a>)}
           <div className="mobile-menu-actions"><a className={`nav-button ${MARKETING_CTA_OUTLINE.dark}`} href={`${MAIN_SITE}/login`}>Log In</a><a className={`nav-button ${MARKETING_CTA_OUTLINE.dark}`} href={`${MAIN_SITE}/signup`}>Try a Demo</a></div>
         </div>
       ) : null}
