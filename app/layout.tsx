@@ -4,6 +4,7 @@ import { Geist_Mono, Inter } from "next/font/google";
 import { BlogFooter } from "@/components/blog-footer";
 import { FooterRevealTrigger } from "@/components/footer-reveal-trigger";
 import { FooterWordmarkReveal } from "@/components/footer-wordmark-reveal";
+import { SiteHeader } from "@/components/site-header";
 import { MAIN_SITE, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 import "./globals.css";
@@ -103,6 +104,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             }),
           }}
         />
+        <SiteHeader />
         <FooterWordmarkReveal />
         <div className="footer-reveal-page">
           <main>{children}</main>
