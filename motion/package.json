@@ -1,0 +1,16 @@
+{
+  "name": "vulnix-blog-motion",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Remotion source for the blog's looping article visuals. Not part of the Next.js build.",
+  "scripts": {
+    "studio": "remotion studio src/index.tsx",
+    "render": "node render.mjs"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.290",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "remotion": "4.0.290"
+  }
+}
