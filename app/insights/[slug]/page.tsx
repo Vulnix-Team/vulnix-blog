@@ -7,6 +7,7 @@ import { formatDate } from "@/lib/format";
 import { getArticleCover } from "@/lib/article-cover";
 import { ArticleCard } from "@/components/article-card";
 import { ArticleToc } from "@/components/article-toc";
+import { ReducedMotionMedia } from "@/components/reduced-motion-media";
 import { markdownToHtml } from "@/lib/markdown";
 import { getAllPosts, getPost } from "@/lib/posts";
 import { MAIN_SITE, SITE_NAME, SITE_URL } from "@/lib/site";
@@ -43,6 +44,27 @@ function getHeadings(markdown: string) {
   }));
 }
 
+/**
+ * Questions and answers from an article's "## Frequently asked questions"
+ * section (each question an `###` heading, its answer the text below), for
+ * FAQPage structured data. The visible FAQ stays in the Markdown, so the two
+ * cannot drift apart.
+ */
+function getFaq(markdown: string) {
+  const section = markdown.match(/^## Frequently asked questions\s*$([\s\S]*?)(?=^## |(?![\s\S]))/m)?.[1];
+  if (!section) return [];
+  return [...section.matchAll(/^###\s+(.+)\s*$([\s\S]*?)(?=^### |(?![\s\S]))/gm)]
+    .map((match) => ({
+      question: match[1].trim(),
+      answer: match[2]
+        .trim()
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+        .replace(/[`*_]/g, "")
+        .replace(/\s+/g, " "),
+    }))
+    .filter((item) => item.answer);
+}
+
 function splitOpeningSection(markdown: string) {
   const sections = [...markdown.matchAll(/^##\s+/gm)];
   const splitAt = sections[1]?.index;
@@ -64,6 +86,7 @@ export default async function InsightPage({ params }: PageProps) {
   const cover = getArticleCover(post.slug);
   const image = `${SITE_URL}${cover.src}`;
   const wordCount = post.content.trim().split(/\s+/).filter(Boolean).length;
+  const faq = getFaq(post.content);
   const articleSchema = {
     "@context": "https://schema.org",
     "@graph": [
@@ -94,6 +117,19 @@ export default async function InsightPage({ params }: PageProps) {
           { "@type": "ListItem", position: 3, name: post.title, item: url },
         ],
       },
+      ...(faq.length
+        ? [
+            {
+              "@type": "FAQPage",
+              "@id": `${url}#faq`,
+              mainEntity: faq.map(({ question, answer }) => ({
+                "@type": "Question",
+                name: question,
+                acceptedAnswer: { "@type": "Answer", text: answer },
+              })),
+            },
+          ]
+        : []),
     ],
   };
 
@@ -115,6 +151,7 @@ export default async function InsightPage({ params }: PageProps) {
             <Image src={cover.src} alt={cover.alt} width={1672} height={941} sizes="(max-width: 820px) calc(100vw - 48px), 720px" />
           </figure>
           <div dangerouslySetInnerHTML={{ __html: remainderHtml }} />
+          <ReducedMotionMedia />
         </div>
         <ArticleToc headings={headings} />
       </article>
