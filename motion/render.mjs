@@ -25,15 +25,26 @@ const remotion = (args) =>
   execFileSync("npx", ["remotion", ...args, "--concurrency=1"].map(quote), { cwd: here, stdio: "inherit", shell: true, env });
 
 console.log("Rendering loop...");
-remotion([
-  "render",
-  "src/index.tsx",
-  "CodingAgentVsVulnix",
-  path.join(outDir, "coding-agent-vs-vulnix.webm"),
-  "--codec=vp9",
-  "--crf=34",
-  "--muted",
-]);
+const rawLoop = path.join(tmpDir, "loop-raw.webm");
+remotion(["render", "src/index.tsx", "CodingAgentVsVulnix", rawLoop, "--codec=vp9", "--crf=34", "--muted"]);
+
+// Remotion's VP9 output is tagged full-range ("pc") colour. Chrome's decoder
+// rejects that stream with PIPELINE_ERROR_DECODE after the first frame, even
+// though ffmpeg decodes it fine - so convert to standard TV range before
+// publishing. Verified in Chromium 2026-09-26.
+console.log("Converting loop to TV-range VP9...");
+execFileSync(
+  "ffmpeg",
+  [
+    "-y", "-loglevel", "error", "-i", rawLoop,
+    "-vf", "scale=in_range=pc:out_range=tv,format=yuv420p",
+    "-color_range", "tv", "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709",
+    "-c:v", "libvpx-vp9", "-b:v", "0", "-crf", "36", "-row-mt", "1", "-g", "60", "-an",
+    path.join(outDir, "coding-agent-vs-vulnix.webm"),
+  ],
+  { stdio: "inherit" },
+);
+rmSync(rawLoop, { force: true });
 
 console.log("Rendering cover...");
 const coverPng = path.join(tmpDir, "cover.png");
