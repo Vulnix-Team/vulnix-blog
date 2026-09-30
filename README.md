@@ -24,8 +24,11 @@ footer (`components/site-footer.tsx`), the `mk-*` colour tokens in
 `app/globals.css` and the article cards are copied from the product's
 marketing site (`apps/web/components/marketing/` in the Vulnix repo), with
 links pointed at vulnix.dev. When the product's marketing design changes,
-port the change here. The blog is dark only for now; it has no light theme
-or theme toggle.
+port the change here. Light and dark themes use the product's `mk-*` tokens and the same
+toggle (`components/theme-toggle.tsx`). The choice is saved in a
+`vulnix-theme` cookie on `.vulnix.dev` (`lib/theme.ts`), not in
+localStorage, so every vulnix.dev subdomain that reads the cookie shares
+it.
 
 **Dot**, the Vulnix character (the Ember square with two eyes), is the
 website's living mark: `components/agent-mark.tsx` is a copy of the
