@@ -67,7 +67,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         } as React.CSSProperties
       }
     >
-      <body>
+      <body className="overflow-x-clip bg-mk-page">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -111,6 +111,14 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <SiteHeader />
         <main>{children}</main>
         <SiteFooter />
+        {/* The product's page frame: two hairlines 1184px apart, fixed to the
+            viewport and running the whole page. Desktop only. It sits over the
+            content, so it blends instead of painting: faint on the page itself,
+            all but gone across cards. */}
+        <div
+          aria-hidden
+          className="pointer-events-none fixed inset-y-0 left-1/2 z-[1] hidden w-[min(1184px,calc(100%-146px))] -translate-x-1/2 border-x border-mk-line mix-blend-screen md:block"
+        />
       </body>
     </html>
   );
