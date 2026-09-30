@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { notFound } from "next/navigation";
 
 import { formatDate } from "@/lib/format";
-import { getArticleCover } from "@/lib/article-cover";
+import { COVER_HEIGHT, COVER_WIDTH, getArticleCover } from "@/lib/article-cover";
 import { ArticleCard } from "@/components/article-card";
 import { ArticleToc } from "@/components/article-toc";
 import { LineLink } from "@/components/line-link";
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!post) return {};
   const url = `${SITE_URL}/insights/${post.slug}`;
   const cover = getArticleCover(post.slug);
-  const image = `${SITE_URL}${cover.src}`;
+  const image = `${SITE_URL}${cover.og}`;
   return {
     title: post.title,
     description: post.description,
@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     category: post.topic,
     authors: [{ name: "Vulnix Team", url: MAIN_SITE }],
     alternates: { canonical: url },
-    openGraph: { type: "article", url, title: post.title, description: post.description, publishedTime: post.publishedAt, modifiedTime: post.updatedAt, authors: ["Vulnix Team"], images: [{ url: image, alt: cover.alt }] },
+    openGraph: { type: "article", url, title: post.title, description: post.description, publishedTime: post.publishedAt, modifiedTime: post.updatedAt, authors: ["Vulnix Team"], images: [{ url: image, width: 1200, height: 630, alt: cover.alt }] },
     twitter: { card: "summary_large_image", title: post.title, description: post.description, images: [image] },
   };
 }
@@ -167,7 +167,7 @@ export default async function InsightPage({ params }: PageProps) {
           <article className="prose mt-12 lg:col-start-1">
             <div dangerouslySetInnerHTML={{ __html: openingHtml }} />
             <figure className="article-figure">
-              <Image src={cover.src} alt={cover.alt} width={1672} height={941} loading="eager" sizes="(max-width: 767px) calc(100vw - 40px), 720px" />
+              <Image src={cover.src} alt={cover.alt} width={COVER_WIDTH} height={COVER_HEIGHT} loading="eager" sizes="(max-width: 767px) calc(100vw - 40px), 720px" />
             </figure>
             <div dangerouslySetInnerHTML={{ __html: remainderHtml }} />
             <ReducedMotionMedia />

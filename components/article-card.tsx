@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { LineLink } from "@/components/line-link";
-import { getArticleCover } from "@/lib/article-cover";
+import { COVER_HEIGHT, COVER_WIDTH, getArticleCover } from "@/lib/article-cover";
 
 export type ArticleCardPost = {
   slug: string;
@@ -36,11 +36,11 @@ export function ArticleCard({
         <Image
           src={cover.src}
           alt={cover.alt}
-          width={1856}
-          height={928}
+          width={COVER_WIDTH}
+          height={COVER_HEIGHT}
           loading={eager ? "eager" : "lazy"}
           sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 400px"
-          className="size-full object-cover object-left-top transition-transform duration-500 ease-out group-hover/link:scale-[1.02]"
+          className="size-full object-cover transition-transform duration-500 ease-out group-hover/link:scale-[1.02]"
         />
       </div>
       <div className="flex flex-1 flex-col items-start gap-[14px] p-6 pb-8 md:pb-6">
