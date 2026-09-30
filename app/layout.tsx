@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Inter } from "next/font/google";
 
-import { BlogFooter } from "@/components/blog-footer";
-import { FooterRevealTrigger } from "@/components/footer-reveal-trigger";
-import { FooterWordmarkReveal } from "@/components/footer-wordmark-reveal";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { satoshi } from "@/app/fonts/satoshi";
 import { MAIN_SITE, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
@@ -111,12 +109,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           }}
         />
         <SiteHeader />
-        <FooterWordmarkReveal />
-        <div className="footer-reveal-page">
-          <main>{children}</main>
-          <BlogFooter />
-        </div>
-        <FooterRevealTrigger />
+        <main>{children}</main>
+        <SiteFooter />
       </body>
     </html>
   );
