@@ -186,7 +186,7 @@ export default async function InsightPage({ params }: PageProps) {
               Continue reading
             </h2>
             <Link href="/" className="group/link text-mk-fg">
-              <LineLink label="All articles" tone="light" />
+              <LineLink label="All articles" tone="page" />
             </Link>
           </div>
           {/* Dot peeks over the cards (which paint over its lower third); the
