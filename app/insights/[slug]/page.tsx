@@ -159,7 +159,7 @@ export default async function InsightPage({ params }: PageProps) {
       <section className="related-section">
         <div className="related-heading"><h2>Continue reading</h2><Link href="/" className="read-link">See all articles <b aria-hidden>↗</b></Link></div>
         <div className="related-grid">
-          {getAllPosts().filter((item) => item.slug !== post.slug).slice(0, 3).map((item) => <ArticleCard key={item.slug} post={item} related />)}
+          {getAllPosts().filter((item) => item.slug !== post.slug).slice(0, 3).map((item) => <ArticleCard key={item.slug} post={item} headingLevel={3} />)}
         </div>
       </section>
 
