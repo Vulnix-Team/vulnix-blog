@@ -172,7 +172,7 @@ export function SiteFooter() {
           {isDesktop && !reducedMotion && (
             // `screen` and the top/bottom mask: see the hero's strands.
             // Lifted 96px so the strands sit nearer the buttons than the card.
-            <div className="absolute inset-x-0 -top-24 h-[640px] mix-blend-screen [mask-image:linear-gradient(transparent,black_25%,black_70%,transparent)]">
+            <div className="absolute inset-x-0 -top-24 h-[640px] mix-blend-screen light:mix-blend-normal [mask-image:linear-gradient(transparent,black_25%,black_70%,transparent)]">
               <Strands
                 className="h-full w-full"
                 colors={["#f39c7e", "#fe4202", "#6b2913"]}

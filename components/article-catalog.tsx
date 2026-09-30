@@ -55,7 +55,7 @@ export function ArticleCatalog({ posts }: { posts: ArticleCardPost[] }) {
               typingLine={{ text: "Ooh, what are we hunting for?", mood: "happy" }}
               className="absolute -top-[40px] right-3 z-0 md:-top-[46px]"
             />
-            <label className="relative z-10 flex h-[38px] items-center gap-2 rounded-[12px] bg-mk-raised px-3 text-mk-fg/50 transition-colors focus-within:bg-[#1f1f1f]">
+            <label className="relative z-10 flex h-[38px] items-center gap-2 rounded-[12px] bg-mk-raised px-3 text-mk-fg/50 transition-colors focus-within:bg-[#1f1f1f] light:focus-within:bg-mk-surface-2">
               <Search aria-hidden size={16} strokeWidth={1.75} />
               <span className="sr-only">Search articles</span>
               <input

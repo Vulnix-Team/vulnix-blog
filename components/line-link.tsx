@@ -7,6 +7,8 @@ import { ArrowRight } from "lucide-react";
 const TONES = {
   ink: { track: "bg-[#d1cdc7]", fill: "bg-[#0e1815]" },
   light: { track: "bg-white/35", fill: "bg-white" },
+  // Blog addition: follows the page theme (Ink on light, white on dark).
+  page: { track: "bg-mk-fg/30", fill: "bg-mk-fg" },
 } as const;
 
 export function LineLink({ label, tone = "ink" }: { label: string; tone?: keyof typeof TONES }) {
