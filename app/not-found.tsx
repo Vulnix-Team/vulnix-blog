@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { AgentMark } from "@/components/agent-mark";
 import { MAIN_SITE } from "@/lib/site";
 
 // The footer's button pair (site-footer.tsx), without the sliding arrows.
@@ -9,6 +10,11 @@ const BUTTON =
 export default function NotFound() {
   return (
     <section className="flex min-h-[70vh] flex-col items-center justify-center px-7 pt-32 pb-16 text-center">
+      <AgentMark
+        lines={[{ text: "This page is out of my scope.", mood: "surprised" }]}
+        className="mb-8"
+        markClassName="size-20 md:size-24"
+      />
       <p className="text-[12px] leading-[14.4px] font-semibold tracking-[1.08px] text-[#fe4202] uppercase">404</p>
       <h1 className="mt-4 max-w-[640px] font-[family-name:var(--font-marketing-heading)] text-[36px] leading-[1.1] font-medium tracking-[-1.2px] text-balance text-mk-fg md:text-[56px] md:tracking-[-2.2px]">
         This field note does not exist
