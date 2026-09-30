@@ -4,6 +4,11 @@
    typography, which styles HTML rendered from Markdown. */
 @import "tailwindcss";
 
+/* The light theme (the mk-* tokens below), for the few values a token can't
+   carry - a shadow, a blend mode. Keep the attribute unquoted: quoted, Tailwind
+   v4 silently generates no light: classes (product marketing-site.md). */
+@custom-variant light (&:where([data-theme=light], [data-theme=light] *));
+
 @theme inline {
   --color-ink: var(--ink);
   --color-ember: var(--ember);
@@ -19,8 +24,8 @@
   --ink: #010101;
   --ember: #fe4202;
 
-  /* The product's marketing tokens (apps/web/app/globals.css), dark values
-     only: the blog has no light theme yet.
+  /* The product's marketing tokens (apps/web/app/globals.css). Dark is the
+     default; data-theme="light" on <html> swaps in the light palette.
      page      - the page ground
      fg        - text and icons on the page (use /opacity for muted text)
      raised    - a band one step off the page
@@ -33,13 +38,38 @@
   --mk-surface: #f2f3ee;
   --mk-surface-2: #e9eae3;
   --mk-line: rgba(255, 255, 255, 0.08);
+  --scrollbar-thumb: rgb(255 255 255 / 15%);
+  --scrollbar-thumb-hover: rgb(255 255 255 / 25%);
   color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --mk-page: #ffffff;
+  --mk-fg: #0e1815;
+  --mk-raised: #f9f8f6;
+  --mk-surface: #f4f3f0;
+  --mk-line: #f4f3f0;
+  --mk-surface-2: #e9e7e2;
+  --scrollbar-thumb: rgb(0 0 0 / 18%);
+  --scrollbar-thumb-hover: rgb(0 0 0 / 30%);
+  color-scheme: light;
+}
+
+/* The theme toggle's reveal (components/theme-toggle.tsx): the new theme
+   grows out of the button as a circle over a snapshot of the old one. */
+:root[data-theme-switching]::view-transition-old(root),
+:root[data-theme-switching]::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+:root[data-theme-switching]::view-transition-new(root) {
+  z-index: 1;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
-    scrollbar-color: rgb(255 255 255 / 15%) transparent;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
     scrollbar-width: thin;
   }
   body {
@@ -49,8 +79,8 @@
     -webkit-font-smoothing: antialiased;
   }
   html::-webkit-scrollbar { width: 10px; }
-  html::-webkit-scrollbar-thumb { border-radius: 9999px; background-color: rgb(255 255 255 / 15%); }
-  html::-webkit-scrollbar-thumb:hover { background-color: rgb(255 255 255 / 25%); }
+  html::-webkit-scrollbar-thumb { border-radius: 9999px; background-color: var(--scrollbar-thumb); }
+  html::-webkit-scrollbar-thumb:hover { background-color: var(--scrollbar-thumb-hover); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -65,7 +95,7 @@
    the product's legal pages: Inter body at /80, Satoshi headings, links
    underlined in a faint rule that firms up on hover. */
 @layer components {
-  .prose { min-width: 0; color: rgb(255 255 255 / 0.8); font-size: 17px; line-height: 1.75; }
+  .prose { min-width: 0; color: color-mix(in srgb, var(--mk-fg) 80%, transparent); font-size: 17px; line-height: 1.75; }
   .prose > div > :first-child { margin-top: 0; }
   .prose p { margin: 0 0 24px; }
   .prose h2 {
@@ -84,7 +114,7 @@
   .prose a {
     color: var(--mk-fg);
     text-decoration: underline;
-    text-decoration-color: rgb(255 255 255 / 0.3);
+    text-decoration-color: color-mix(in srgb, var(--mk-fg) 30%, transparent);
     text-decoration-thickness: 1px;
     text-underline-offset: 3px;
     transition: text-decoration-color 0.2s;
@@ -99,19 +129,19 @@
     border-radius: 6px;
     padding: 0.1em 0.4em;
     color: var(--mk-fg);
-    background: rgb(255 255 255 / 0.08);
+    background: color-mix(in srgb, var(--mk-fg) 8%, transparent);
     font: 0.86em var(--font-marketing-mono), ui-monospace, monospace;
   }
   .prose table { width: 100%; margin: 32px 0; border-collapse: collapse; font-size: 15px; line-height: 1.5; }
   .prose th {
-    color: rgb(255 255 255 / 0.5);
+    color: color-mix(in srgb, var(--mk-fg) 50%, transparent);
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 1.08px;
     text-align: left;
     text-transform: uppercase;
   }
-  .prose th, .prose td { border-bottom: 1px solid rgb(255 255 255 / 0.1); padding: 14px 16px 14px 0; vertical-align: top; }
+  .prose th, .prose td { border-bottom: 1px solid color-mix(in srgb, var(--mk-fg) 10%, transparent); padding: 14px 16px 14px 0; vertical-align: top; }
   .prose th:first-child, .prose td:first-child { width: 38%; }
 
   /* Markdown images and looping .webm illustrations. */
@@ -120,11 +150,11 @@
     display: block;
     width: 100%;
     height: auto;
-    border: 1px solid rgb(255 255 255 / 0.1);
+    border: 1px solid color-mix(in srgb, var(--mk-fg) 10%, transparent);
     border-radius: 16px;
     background: var(--ink);
   }
-  .article-figure figcaption { margin-top: 12px; color: rgb(255 255 255 / 0.5); font-size: 14px; line-height: 1.5; }
+  .article-figure figcaption { margin-top: 12px; color: color-mix(in srgb, var(--mk-fg) 50%, transparent); font-size: 14px; line-height: 1.5; }
 
   @media (max-width: 767px) {
     .prose { font-size: 16px; }

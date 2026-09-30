@@ -5,6 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { satoshi } from "@/app/fonts/satoshi";
 import { MAIN_SITE, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+import { THEME_INIT_SCRIPT } from "@/lib/theme";
 
 import "./globals.css";
 
@@ -57,8 +58,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
+    // data-theme is rewritten by THEME_INIT_SCRIPT before hydration when a
+    // visitor chose light, hence suppressHydrationWarning (this element only).
     <html
       lang="en"
+      data-theme="dark"
+      suppressHydrationWarning
       className={`${geistMono.variable} ${inter.variable} ${satoshi.variable} overflow-x-clip`}
       style={
         {
@@ -67,6 +72,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         } as React.CSSProperties
       }
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body className="overflow-x-clip bg-mk-page">
         <script
           type="application/ld+json"
@@ -117,7 +125,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             all but gone across cards. */}
         <div
           aria-hidden
-          className="pointer-events-none fixed inset-y-0 left-1/2 z-[1] hidden w-[min(1184px,calc(100%-146px))] -translate-x-1/2 border-x border-mk-line mix-blend-screen md:block"
+          className="pointer-events-none fixed inset-y-0 left-1/2 z-[1] hidden w-[min(1184px,calc(100%-146px))] -translate-x-1/2 border-x border-mk-line mix-blend-screen light:mix-blend-multiply md:block"
         />
       </body>
     </html>
