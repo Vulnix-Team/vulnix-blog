@@ -14,12 +14,12 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { ThemeToggle } from "@/components/theme-toggle";
 import { DOCS_SITE, MAIN_SITE } from "@/lib/site";
 
 // Port of the product's marketing header
 // (product/apps/web/components/marketing/site-header.tsx). Differences: links
-// point at vulnix.dev, "Blog" is this site, and there is no announcement strip
-// or theme toggle (the blog is dark only for now).
+// point at vulnix.dev, "Blog" is this site, and there is no announcement strip.
 
 const EASE = "cubic-bezier(0.22,1,0.36,1)";
 
@@ -216,7 +216,7 @@ export function SiteHeader() {
 
       {/* One opaque surface for both the bar and its dropdown: the panel grows
           out of the bar instead of floating beneath it. */}
-      <div className="overflow-hidden rounded-b-[24px] border-x-[0.8px] border-b-[0.8px] border-mk-fg/10 bg-mk-page shadow-[0px_24px_60px_-24px_rgba(0,0,0,0.6)]">
+      <div className="overflow-hidden rounded-b-[24px] border-x-[0.8px] border-b-[0.8px] border-mk-fg/10 bg-mk-page shadow-[0px_24px_60px_-24px_rgba(0,0,0,0.6)] light:shadow-[0px_16px_40px_-20px_rgba(0,0,0,0.15)]">
         <nav
           className={`grid grid-cols-[1fr_auto] items-center border-b-[0.8px] px-4 pt-[7.52px] pb-[8.48px] transition-colors duration-[250ms] md:grid-cols-[auto_1fr_auto] md:px-6 ${expanded ? "border-mk-fg/10" : "border-transparent"}`}
         >
@@ -255,6 +255,7 @@ export function SiteHeader() {
           </ul>
 
           <div className="flex items-center justify-self-end gap-2">
+            <ThemeToggle />
             <Link
               prefetch={false}
               href={`${MAIN_SITE}/login`}
