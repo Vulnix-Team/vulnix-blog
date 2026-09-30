@@ -1,13 +1,13 @@
-import { AbsoluteFill, Img, staticFile } from "remotion";
+import { AbsoluteFill } from "remotion";
 
 import { CREAM, EMBER, FONT_MONO, INK, loadBrandFonts } from "../brand";
 import { Dot } from "../dot";
-import { roughPath, roughRect, type Pt } from "../rough";
+type Pt = [number, number];
 
 // Cover for "How to Validate a Security Fix". The fix check from the demo
 // film: Dot has replayed the exploit at the patched wall and bounced off it -
-// 403 - with the old crack sealed in Ember. Two style samples of the same
-// moment: a flat "stage" (the website's use-case stage) and the film's paper.
+// 403 - with the old crack sealed in Ember. Drawn as the website's use-case
+// stage: one flat colour, crisp shapes.
 //
 // 2:1 master. Everything that matters sits between x 450 and 1950, so the
 // 5:4 crop on vulnix.dev and the 1.91:1 link preview both keep it.
@@ -69,8 +69,7 @@ function Tag({ fill, text }: { fill: string; text: string }) {
   );
 }
 
-/** A: the website's use-case stage - one flat colour, crisp shapes. */
-export function ValidateFixStage() {
+export function ValidateFixCover() {
   loadBrandFonts();
   const ground = "#c5d3c9"; // the stage's Knowledge sage
   const floor = "#b2c3b7";
@@ -95,37 +94,6 @@ export function ValidateFixStage() {
         <ellipse cx={DOT.x} cy={FLOOR + 14} rx={120} ry={18} fill={INK} opacity={0.14} />
         <Dot x={DOT.x} y={DOT.y} size={DOT.size} mood="happy" look={[1, -0.2]} rotate={-12} />
       </svg>
-    </AbsoluteFill>
-  );
-}
-
-/** B: the demo film's paper world - cream, wobbly ink, grain. */
-export function ValidateFixPaper() {
-  loadBrandFonts();
-  const line = "#1d1d1b";
-  const grain = staticFile("film/grain.png");
-  return (
-    <AbsoluteFill style={{ backgroundColor: CREAM }}>
-      <svg width={COVER_W} height={COVER_H} viewBox={`0 0 ${COVER_W} ${COVER_H}`}>
-        <path d={roughPath([[450, FLOOR], [2090, FLOOR]], 4, 3)} fill="none" stroke={line} strokeWidth={5} strokeLinecap="round" />
-        {/* The patched wall */}
-        <path d={roughRect(WALL.x, WALL.y, WALL.w, FLOOR - WALL.y, 7, 3)} fill="#e6e4dc" stroke={line} strokeWidth={5} strokeLinejoin="round" />
-        {brickJoints().map(([a, b], i) => (
-          <path key={i} d={roughPath([a, b], 20 + i, 1.8)} fill="none" stroke={line} strokeOpacity={0.55} strokeWidth={3.5} strokeLinecap="round" />
-        ))}
-        {/* The crack, sealed in Ember (kintsugi) */}
-        <path d={roughPath(SEAM, 11, 2.5)} fill="none" stroke={EMBER} strokeWidth={18} strokeLinejoin="round" strokeLinecap="butt" />
-        <path d={roughPath(SEAM, 11, 2.5)} fill="none" stroke="#ffc2a6" strokeWidth={5} strokeLinejoin="round" transform="translate(-4 -2)" />
-        {burst.map(([a, b], i) => (
-          <path key={i} d={roughPath([a, b], 40 + i, 1.5)} fill="none" stroke={line} strokeWidth={7} strokeLinecap="round" />
-        ))}
-        <path d={TRAIL} fill="none" stroke={line} strokeOpacity={0.4} strokeWidth={7} strokeDasharray="2 26" strokeLinecap="round" />
-        <Tag fill={INK} text={CREAM} />
-        <ellipse cx={DOT.x} cy={FLOOR + 14} rx={120} ry={18} fill={INK} opacity={0.12} />
-        <Dot x={DOT.x} y={DOT.y} size={DOT.size} mood="happy" look={[1, -0.2]} rotate={-12} />
-      </svg>
-      <Img src={grain} style={{ display: "none" }} />
-      <AbsoluteFill style={{ backgroundImage: `url(${grain})`, opacity: 0.22, pointerEvents: "none" }} />
     </AbsoluteFill>
   );
 }
