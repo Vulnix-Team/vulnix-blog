@@ -17,6 +17,16 @@ npm install
 npm run dev
 ```
 
+## Design
+
+The blog shares vulnix.dev's look. Its header (`components/site-header.tsx`),
+footer (`components/site-footer.tsx`), the `mk-*` colour tokens in
+`app/globals.css` and the article cards are copied from the product's
+marketing site (`apps/web/components/marketing/` in the Vulnix repo), with
+links pointed at vulnix.dev. When the product's marketing design changes,
+port the change here. The blog is dark only for now; it has no light theme
+or theme toggle.
+
 Before opening a pull request, run:
 
 ```bash

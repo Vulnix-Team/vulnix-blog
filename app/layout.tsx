@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Inter } from "next/font/google";
 
-import { BlogFooter } from "@/components/blog-footer";
-import { FooterRevealTrigger } from "@/components/footer-reveal-trigger";
-import { FooterWordmarkReveal } from "@/components/footer-wordmark-reveal";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { satoshi } from "@/app/fonts/satoshi";
 import { MAIN_SITE, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 import "./globals.css";
@@ -60,10 +59,15 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html
       lang="en"
-      className={`${geistMono.variable} ${inter.variable}`}
-      style={{ "--font-marketing-mono": "var(--font-geist-mono)" } as React.CSSProperties}
+      className={`${geistMono.variable} ${inter.variable} ${satoshi.variable} overflow-x-clip`}
+      style={
+        {
+          "--font-marketing-heading": "var(--font-satoshi), ui-sans-serif, system-ui, sans-serif",
+          "--font-marketing-mono": "var(--font-geist-mono)",
+        } as React.CSSProperties
+      }
     >
-      <body>
+      <body className="overflow-x-clip bg-mk-page">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -105,12 +109,16 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           }}
         />
         <SiteHeader />
-        <FooterWordmarkReveal />
-        <div className="footer-reveal-page">
-          <main>{children}</main>
-          <BlogFooter />
-        </div>
-        <FooterRevealTrigger />
+        <main>{children}</main>
+        <SiteFooter />
+        {/* The product's page frame: two hairlines 1184px apart, fixed to the
+            viewport and running the whole page. Desktop only. It sits over the
+            content, so it blends instead of painting: faint on the page itself,
+            all but gone across cards. */}
+        <div
+          aria-hidden
+          className="pointer-events-none fixed inset-y-0 left-1/2 z-[1] hidden w-[min(1184px,calc(100%-146px))] -translate-x-1/2 border-x border-mk-line mix-blend-screen md:block"
+        />
       </body>
     </html>
   );

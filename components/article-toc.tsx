@@ -19,9 +19,24 @@ export function ArticleToc({ headings }: { headings: Heading[] }) {
   }, [headings]);
 
   return (
-    <aside className="article-sidebar" aria-label="Article table of contents">
-      <p>On this page</p>
-      <nav>{headings.map((heading) => <a key={heading.id} href={`#${heading.id}`} data-active={activeId === heading.id}>{heading.text}</a>)}</nav>
+    <aside aria-label="Article table of contents" className="sticky top-28 hidden self-start lg:block">
+      {/* Same group heading as the header's Product menu. */}
+      <p className="mb-4 text-[10px] leading-3 font-semibold tracking-[0.8px] text-mk-fg/45 uppercase">On this page</p>
+      <nav className="flex flex-col gap-3 border-l border-mk-fg/10">
+        {headings.map((heading) => {
+          const active = activeId === heading.id;
+          return (
+            <a
+              key={heading.id}
+              href={`#${heading.id}`}
+              aria-current={active ? "location" : undefined}
+              className={`-ml-px border-l-2 pl-4 text-[13px] leading-[1.4] transition-colors ${active ? "border-[#fe4202] text-mk-fg" : "border-transparent text-mk-fg/45 hover:text-mk-fg/80"}`}
+            >
+              {heading.text}
+            </a>
+          );
+        })}
+      </nav>
     </aside>
   );
 }
