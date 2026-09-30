@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 
 import { formatDate } from "@/lib/format";
 import { COVER_HEIGHT, COVER_WIDTH, getArticleCover } from "@/lib/article-cover";
+import { AgentMark } from "@/components/agent-mark";
 import { ArticleCard } from "@/components/article-card";
 import { ArticleToc } from "@/components/article-toc";
 import { LineLink } from "@/components/line-link";
@@ -188,7 +189,10 @@ export default async function InsightPage({ params }: PageProps) {
               <LineLink label="All articles" tone="light" />
             </Link>
           </div>
-          <div className={`grid grid-cols-1 gap-4 md:grid-cols-2 ${related.length > 2 ? "lg:grid-cols-3" : ""}`}>
+          {/* Dot peeks over the cards (which paint over its lower third); the
+              extra top margin keeps it clear of the heading row. */}
+          <div className={`relative mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 ${related.length > 2 ? "lg:grid-cols-3" : ""}`}>
+            <AgentMark className="absolute -top-[40px] right-6 md:-top-[46px] md:right-8" />
             {related.map((item) => (
               <ArticleCard key={item.slug} post={item} headingLevel={3} />
             ))}
