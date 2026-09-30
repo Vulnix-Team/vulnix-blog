@@ -133,11 +133,4 @@
     .article-figure { margin: 32px 0 36px; }
     .article-figure img, .article-figure video { border-radius: 12px; }
   }
-
-  /* 404 page, until it moves to utilities. */
-  .not-found { min-height: 650px; padding: 220px 8vw; background: var(--ink); color: #fff; }
-  .not-found h1 { max-width: 700px; margin: 0; font-size: clamp(3.5rem, 8vw, 8rem); font-weight: 700; letter-spacing: -.08em; line-height: .9; }
-  .eyebrow { display: flex; align-items: center; gap: 9px; margin: 0 0 24px; color: rgba(255,255,255,.62); font: 11px var(--font-marketing-mono); letter-spacing: .12em; text-transform: uppercase; }
-  .signal-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--ember); box-shadow: 0 0 16px rgba(254,66,2,.8); }
-  .cta-link { display: inline-flex; align-items: center; gap: 12px; margin-top: 31px; color: var(--ember); font: 11px var(--font-marketing-mono); letter-spacing: .1em; text-transform: uppercase; }
 }
