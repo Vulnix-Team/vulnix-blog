@@ -1,16 +1,17 @@
-@font-face {
-  font-family: "Satoshi";
-  src: url("/fonts/Satoshi-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Satoshi";
-  src: url("/fonts/Satoshi-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
+/* Tailwind, as on vulnix.dev, so the marketing chrome ports from
+   product/apps/web/components/marketing with its classes unchanged. The
+   blog's own rules below sit in the components layer, under the utilities. */
+@import "tailwindcss";
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ember: var(--ember);
+  --color-mk-page: var(--mk-page);
+  --color-mk-fg: var(--mk-fg);
+  --color-mk-raised: var(--mk-raised);
+  --color-mk-surface: var(--mk-surface);
+  --color-mk-surface-2: var(--mk-surface-2);
+  --color-mk-line: var(--mk-line);
 }
 
 :root {
@@ -21,15 +22,35 @@
   --ember-soft: #f39c7e;
   --muted: #68716d;
   --line: rgba(1, 1, 1, 0.14);
-  --mono: "Geist Mono", "SFMono-Regular", Consolas, monospace;
-  --body: "Satoshi", Inter, ui-sans-serif, system-ui, sans-serif;
+  --mono: var(--font-geist-mono), "SFMono-Regular", Consolas, monospace;
+  --body: var(--font-satoshi), Inter, ui-sans-serif, system-ui, sans-serif;
+
+  /* The product's marketing tokens (apps/web/app/globals.css), dark values
+     only: the blog has no light theme yet.
+     page      - the page ground
+     fg        - text and icons on the page (use /opacity for muted text)
+     raised    - a band one step off the page
+     surface   - cards; always light, so text on them stays Ink
+     surface-2 - a fill or hover one step darker than surface
+     line      - the page frame and section hairlines */
+  --mk-page: var(--ink);
+  --mk-fg: #ffffff;
+  --mk-raised: #141414;
+  --mk-surface: #f2f3ee;
+  --mk-surface-2: #e9eae3;
+  --mk-line: rgba(255, 255, 255, 0.08);
+  color-scheme: dark;
 }
 
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; background: var(--paper); }
-body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 16px; -webkit-font-smoothing: antialiased; }
-a { color: inherit; text-decoration: none; }
-button { font: inherit; }
+@layer base {
+  html { scroll-behavior: smooth; background: var(--paper); }
+  body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 16px; -webkit-font-smoothing: antialiased; }
+  /* Tailwind's reset makes headings inherit weight; the blog's rules were
+     written against the browser's bold default. */
+  h1, h2, h3, h4 { font-weight: 700; }
+}
+
+@layer components {
 
 .site-header { position: absolute; inset: 0 0 auto; z-index: 20; padding: 22px 24px 0; }
 .nav-shell { width: min(1370px, 100%); margin: 0 auto; padding: 11px 14px 11px 20px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; border: 1px solid rgba(255,255,255,.12); border-radius: 14px; background: rgba(1,1,1,.87); box-shadow: 0 22px 45px -25px #000; }
@@ -124,6 +145,8 @@ h1 em, h2 em { color: var(--ember); font-style: normal; }
 .prose a { color: var(--ember); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 .prose strong { font-weight: 700; }
 .prose ul, .prose ol { margin: 0 0 29px; padding-left: 25px; }
+.prose ul { list-style: disc; }
+.prose ol { list-style: decimal; }
 .prose li { padding-left: 7px; margin: 8px 0; }
 .prose li::marker { color: var(--ember); }
 .prose table { width: 100%; margin: 32px 0; border-collapse: collapse; font-size: 15px; line-height: 1.4; }
@@ -751,3 +774,4 @@ html { scrollbar-color: rgb(255 255 255 / 15%) transparent; scrollbar-width: thi
 html::-webkit-scrollbar { width: 10px; }
 html::-webkit-scrollbar-thumb { border-radius: 9999px; background-color: rgb(255 255 255 / 15%); }
 html::-webkit-scrollbar-thumb:hover { background-color: rgb(255 255 255 / 25%); }
+}

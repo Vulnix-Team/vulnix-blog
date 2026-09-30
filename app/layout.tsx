@@ -5,6 +5,7 @@ import { BlogFooter } from "@/components/blog-footer";
 import { FooterRevealTrigger } from "@/components/footer-reveal-trigger";
 import { FooterWordmarkReveal } from "@/components/footer-wordmark-reveal";
 import { SiteHeader } from "@/components/site-header";
+import { satoshi } from "@/app/fonts/satoshi";
 import { MAIN_SITE, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 import "./globals.css";
@@ -60,8 +61,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html
       lang="en"
-      className={`${geistMono.variable} ${inter.variable}`}
-      style={{ "--font-marketing-mono": "var(--font-geist-mono)" } as React.CSSProperties}
+      className={`${geistMono.variable} ${inter.variable} ${satoshi.variable} overflow-x-clip`}
+      style={
+        {
+          "--font-marketing-heading": "var(--font-satoshi), ui-sans-serif, system-ui, sans-serif",
+          "--font-marketing-mono": "var(--font-geist-mono)",
+        } as React.CSSProperties
+      }
     >
       <body>
         <script
