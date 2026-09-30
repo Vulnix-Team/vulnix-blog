@@ -1,20 +1,12 @@
-import { AbsoluteFill } from "remotion";
-
-import { CREAM, EMBER, FONT_MONO, INK, loadBrandFonts } from "../brand";
+import { CREAM, EMBER, FONT_MONO, INK } from "../brand";
 import { Dot } from "../dot";
-type Pt = [number, number];
+import { FLOOR, Shadow, Stage, type Pt } from "./stage";
 
 // Cover for "How to Validate a Security Fix". The fix check from the demo
 // film: Dot has replayed the exploit at the patched wall and bounced off it -
 // 403 - with the old crack sealed in Ember. Drawn as the website's use-case
 // stage: one flat colour, crisp shapes.
-//
-// 2:1 master. Everything that matters sits between x 450 and 1950, so the
-// 5:4 crop on vulnix.dev and the 1.91:1 link preview both keep it.
-export const COVER_W = 2400;
-export const COVER_H = 1200;
 
-const FLOOR = 980;
 const WALL = { x: 1330, y: 150, w: 360 };
 const BRICK_H = 94;
 const BRICK_W = 180;
@@ -70,30 +62,24 @@ function Tag({ fill, text }: { fill: string; text: string }) {
 }
 
 export function ValidateFixCover() {
-  loadBrandFonts();
-  const ground = "#c5d3c9"; // the stage's Knowledge sage
-  const floor = "#b2c3b7";
   return (
-    <AbsoluteFill style={{ backgroundColor: ground }}>
-      <svg width={COVER_W} height={COVER_H} viewBox={`0 0 ${COVER_W} ${COVER_H}`}>
-        <rect x={0} y={FLOOR} width={COVER_W} height={COVER_H - FLOOR} fill={floor} />
-        {/* The patched wall */}
-        <rect x={WALL.x} y={WALL.y} width={WALL.w} height={FLOOR - WALL.y} rx={18} fill={INK} />
-        {brickJoints().map(([a, b], i) => (
-          <line key={i} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#2b2b29" strokeWidth={6} />
-        ))}
-        {/* The crack, sealed in Ember */}
-        <path d={seamD} fill="none" stroke={EMBER} strokeWidth={18} strokeLinejoin="round" strokeLinecap="butt" />
-        <path d={seamD} fill="none" stroke="#ffc2a6" strokeWidth={5} strokeLinejoin="round" transform="translate(-4 -2)" />
-        {/* Where the replayed exploit hit */}
-        {burst.map(([a, b], i) => (
-          <line key={i} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke={INK} strokeWidth={9} strokeLinecap="round" />
-        ))}
-        <path d={TRAIL} fill="none" stroke={INK} strokeOpacity={0.35} strokeWidth={8} strokeDasharray="2 26" strokeLinecap="round" />
-        <Tag fill={INK} text={CREAM} />
-        <ellipse cx={DOT.x} cy={FLOOR + 14} rx={120} ry={18} fill={INK} opacity={0.14} />
-        <Dot x={DOT.x} y={DOT.y} size={DOT.size} mood="happy" look={[1, -0.2]} rotate={-12} />
-      </svg>
-    </AbsoluteFill>
+    <Stage tone="sage">
+      {/* The patched wall */}
+      <rect x={WALL.x} y={WALL.y} width={WALL.w} height={FLOOR - WALL.y} rx={18} fill={INK} />
+      {brickJoints().map(([a, b], i) => (
+        <line key={i} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#2b2b29" strokeWidth={6} />
+      ))}
+      {/* The crack, sealed in Ember */}
+      <path d={seamD} fill="none" stroke={EMBER} strokeWidth={18} strokeLinejoin="round" strokeLinecap="butt" />
+      <path d={seamD} fill="none" stroke="#ffc2a6" strokeWidth={5} strokeLinejoin="round" transform="translate(-4 -2)" />
+      {/* Where the replayed exploit hit */}
+      {burst.map(([a, b], i) => (
+        <line key={i} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke={INK} strokeWidth={9} strokeLinecap="round" />
+      ))}
+      <path d={TRAIL} fill="none" stroke={INK} strokeOpacity={0.35} strokeWidth={8} strokeDasharray="2 26" strokeLinecap="round" />
+      <Tag fill={INK} text={CREAM} />
+      <Shadow x={DOT.x} />
+      <Dot x={DOT.x} y={DOT.y} size={DOT.size} mood="happy" look={[1, -0.2]} rotate={-12} />
+    </Stage>
   );
 }
