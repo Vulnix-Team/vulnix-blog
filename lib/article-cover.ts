@@ -13,7 +13,7 @@ const ALT: Record<string, string> = {
   "ai-pentesting-vs-vulnerability-scanning":
     "Dot, the Vulnix character, carries one proven finding on its head while a scanner prints a long receipt of question marks",
   "can-coding-agents-replace-a-pentest":
-    "A blueprint on an easel with its door marked in orange, and Dot, the Vulnix character, hopping toward a real open door",
+    "A friendly sparring match in a boxing ring: a coding-agent robot throws a jab, Dot, the Vulnix character, hops clear of it with a wink, and a second robot holds up a Round 1 card",
   "how-to-validate-a-security-fix":
     "Dot, the Vulnix character, bounces off a brick wall whose crack is sealed in orange, with a 403 tag above",
 };
