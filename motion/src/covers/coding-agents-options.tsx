@@ -28,12 +28,28 @@ function Glove({ x, y, angle, fill }: { x: number; y: number; angle: number; fil
   );
 }
 
-function Limbs({ x, top, w, h, base, arms }: { x: number; top: number; w: number; h: number; base: number; arms: [Arm, Arm] }) {
+function Limbs({
+  x,
+  top,
+  w,
+  h,
+  base,
+  arms,
+  stance = 0,
+}: {
+  x: number;
+  top: number;
+  w: number;
+  h: number;
+  base: number;
+  arms: [Arm, Arm];
+  stance?: number;
+}) {
   const shoulderY = top + h * 0.58;
   return (
     <g>
       {[-1, 1].map((side) => (
-        <line key={side} x1={x + side * w * 0.22} y1={top + h - 6} x2={x + side * w * 0.26} y2={base} {...LIMB} />
+        <line key={side} x1={x + side * w * 0.22} y1={top + h - 6} x2={x + side * (w * 0.26 + stance)} y2={base} {...LIMB} />
       ))}
       {arms.map((arm, i) => {
         const side = i === 0 ? -1 : 1;
@@ -52,35 +68,56 @@ function Limbs({ x, top, w, h, base, arms }: { x: number; top: number; w: number
   );
 }
 
-/** A coding agent as a terminal window: title-bar dots and a prompt for a face. */
+/** Determined brows: a V over two eyes centred on (x +/- dx, y). */
+function Brows({ x, y, dx, color }: { x: number; y: number; dx: number; color: string }) {
+  return (
+    <g stroke={color} strokeWidth={9} strokeLinecap="round">
+      <line x1={x - dx - 22} y1={y - 36} x2={x - dx + 18} y2={y - 22} />
+      <line x1={x + dx + 22} y1={y - 36} x2={x + dx - 18} y2={y - 22} />
+    </g>
+  );
+}
+
+/**
+ * A coding agent as a black robot whose face is a terminal: antenna, a
+ * screen with the window's three dots, two eyes, and a cursor for a mouth.
+ */
 function TerminalBot({
   x,
-  w = 240,
+  w = 230,
   base = FLOOR,
-  face = ">_",
   arms,
   lean = 0,
+  stance = 0,
+  fierce = false,
 }: {
   x: number;
   w?: number;
   base?: number;
-  face?: string;
   arms: [Arm, Arm];
   lean?: number;
+  stance?: number;
+  fierce?: boolean;
 }) {
-  const h = w * 0.78;
+  const h = w * 0.86;
   const top = base - 70 - h;
+  const screen = { x: x - w / 2 + 24, y: top + 24, w: w - 48, h: h * 0.6 };
+  const eyeY = screen.y + screen.h * 0.52;
   return (
     <g transform={`rotate(${lean} ${x} ${base})`}>
-      <Limbs x={x} top={top} w={w} h={h} base={base} arms={arms} />
-      <rect x={x - w / 2} y={top} width={w} height={h} rx={24} fill={INK} />
+      <Limbs x={x} top={top} w={w} h={h} base={base} arms={arms} stance={stance} />
+      <line x1={x} y1={top} x2={x} y2={top - 54} stroke={INK} strokeWidth={10} strokeLinecap="round" />
+      <circle cx={x} cy={top - 62} r={16} fill={INK} />
+      <rect x={x - w / 2} y={top} width={w} height={h} rx={34} fill={INK} />
+      <rect x={screen.x} y={screen.y} width={screen.w} height={screen.h} rx={18} fill="#2b2b2b" />
       {[0, 1, 2].map((i) => (
-        <circle key={i} cx={x - w / 2 + 30 + i * 26} cy={top + 28} r={8} fill={CREAM} opacity={0.45} />
+        <circle key={i} cx={screen.x + 14 + i * 18} cy={top + 12} r={5} fill={CREAM} opacity={0.5} />
       ))}
-      <line x1={x - w / 2} y1={top + 54} x2={x + w / 2} y2={top + 54} stroke={CREAM} strokeOpacity={0.15} strokeWidth={3} />
-      <text x={x} y={top + h * 0.72} textAnchor="middle" fontFamily={FONT_MONO} fontWeight={600} fontSize={w * 0.34} fill={CREAM}>
-        {face}
-      </text>
+      {[-1, 1].map((sd) => (
+        <rect key={sd} x={x + sd * 40 - 9} y={eyeY - 20} width={18} height={40} rx={9} fill={CREAM} />
+      ))}
+      {fierce ? <Brows x={x} y={eyeY - 16} dx={40} color={CREAM} /> : null}
+      <rect x={x + 26} y={screen.y + screen.h - 30} width={34} height={10} rx={5} fill={CREAM} />
     </g>
   );
 }
@@ -91,34 +128,45 @@ function RoboBot({
   w = 210,
   base = FLOOR,
   happy = false,
+  fierce = false,
   arms,
   lean = 0,
+  stance = 0,
 }: {
   x: number;
   w?: number;
   base?: number;
   happy?: boolean;
+  fierce?: boolean;
   arms: [Arm, Arm];
   lean?: number;
+  stance?: number;
 }) {
   const h = w * 0.86;
   const top = base - 70 - h;
   const eyeY = top + h * 0.45;
   return (
     <g transform={`rotate(${lean} ${x} ${base})`}>
-      <Limbs x={x} top={top} w={w} h={h} base={base} arms={arms} />
+      <Limbs x={x} top={top} w={w} h={h} base={base} arms={arms} stance={stance} />
       <line x1={x} y1={top} x2={x} y2={top - 54} stroke={INK} strokeWidth={10} strokeLinecap="round" />
       <circle cx={x} cy={top - 62} r={16} fill={BLUE} />
       <rect x={x - w / 2} y={top} width={w} height={h} rx={34} fill={BLUE} />
       <rect x={x - w / 2 + 26} y={top + 26} width={w - 52} height={h * 0.56} rx={20} fill={BLUE_SCREEN} />
       {happy ? (
-        [-1, 1].map((s) => (
-          <path key={s} d={`M ${x + s * 38 - 16} ${eyeY + 6} Q ${x + s * 38} ${eyeY - 18} ${x + s * 38 + 16} ${eyeY + 6}`} fill="none" stroke={INK} strokeWidth={9} strokeLinecap="round" />
+        [-1, 1].map((sd) => (
+          <path key={sd} d={`M ${x + sd * 38 - 16} ${eyeY + 6} Q ${x + sd * 38} ${eyeY - 18} ${x + sd * 38 + 16} ${eyeY + 6}`} fill="none" stroke={INK} strokeWidth={9} strokeLinecap="round" />
         ))
       ) : (
-        [-1, 1].map((s) => <circle key={s} cx={x + s * 38} cy={eyeY} r={14} fill={INK} />)
+        [-1, 1].map((sd) => <circle key={sd} cx={x + sd * 38} cy={eyeY} r={14} fill={INK} />)
       )}
-      <path d={`M ${x - 22} ${eyeY + 38} Q ${x} ${eyeY + 54} ${x + 22} ${eyeY + 38}`} fill="none" stroke={INK} strokeWidth={8} strokeLinecap="round" />
+      {fierce ? (
+        <>
+          <Brows x={x} y={eyeY} dx={38} color={INK} />
+          <line x1={x - 20} y1={eyeY + 44} x2={x + 20} y2={eyeY + 44} stroke={INK} strokeWidth={8} strokeLinecap="round" />
+        </>
+      ) : (
+        <path d={`M ${x - 22} ${eyeY + 38} Q ${x} ${eyeY + 54} ${x + 22} ${eyeY + 38}`} fill="none" stroke={INK} strokeWidth={8} strokeLinecap="round" />
+      )}
     </g>
   );
 }
@@ -250,7 +298,7 @@ export function CodingAgentsWallCover() {
   return (
     <Stage tone="sage">
       <Shadow x={640} width={230} />
-      <TerminalBot x={640} w={230} face=">_" arms={[{ angle: -105, length: 150 }, { angle: -75, length: 150 }]} />
+      <TerminalBot x={640} w={230} arms={[{ angle: -105, length: 150 }, { angle: -75, length: 150 }]} />
       {/* A brick on its way to the wall, carried overhead */}
       <Brick x={640 - 130} y={FLOOR - 70 - 230 * 0.78 - WALL.brickH - 6} w={260} h={WALL.brickH} />
 
@@ -299,14 +347,27 @@ export function CodingAgentsSparringCover() {
         <rect key={x} x={x - 22} y={ROPES[2] - 40} width={44} height={RING.mat - ROPES[2] + 40} rx={10} fill={INK} />
       ))}
 
-      <Shadow x={900} width={200} />
-      <RoboBot x={760} w={190} base={RING.mat} happy arms={[{ angle: -110, length: 90, glove: BLUE }, { angle: -70, length: 90, glove: BLUE }]} />
-      <TerminalBot
-        x={1060}
-        w={230}
+      <ellipse cx={690} cy={RING.mat + 14} rx={100} ry={16} fill={INK} opacity={0.12} />
+      <ellipse cx={1085} cy={RING.mat + 14} rx={120} ry={16} fill={INK} opacity={0.12} />
+      {/* The robot in a boxing guard: leaning in, feet apart, one glove up by
+          its face and one out front. */}
+      <RoboBot
+        x={690}
+        w={190}
         base={RING.mat}
+        fierce
+        lean={8}
+        stance={26}
+        arms={[{ angle: -115, length: 95, glove: BLUE }, { angle: -15, length: 125, glove: BLUE }]}
+      />
+      <TerminalBot
+        x={1085}
+        w={220}
+        base={RING.mat}
+        fierce
         lean={6}
-        arms={[{ angle: -100, length: 80, glove }, { angle: -8, length: 190, glove }]}
+        stance={20}
+        arms={[{ angle: -115, length: 95, glove }, { angle: -8, length: 190, glove }]}
       />
       {/* The jab's swish, and where Dot used to be */}
       {[0, 1, 2].map((i) => (
