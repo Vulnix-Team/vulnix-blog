@@ -347,19 +347,17 @@ export function CodingAgentsSparringCover() {
         <rect key={x} x={x - 22} y={ROPES[2] - 40} width={44} height={RING.mat - ROPES[2] + 40} rx={10} fill={INK} />
       ))}
 
-      <ellipse cx={690} cy={RING.mat + 14} rx={100} ry={16} fill={INK} opacity={0.12} />
+      <ellipse cx={620} cy={RING.mat + 14} rx={100} ry={16} fill={INK} opacity={0.12} />
       <ellipse cx={1085} cy={RING.mat + 14} rx={120} ry={16} fill={INK} opacity={0.12} />
-      {/* The robot in a boxing guard: leaning in, feet apart, one glove up by
-          its face and one out front. */}
-      <RoboBot
-        x={690}
-        w={190}
-        base={RING.mat}
-        fierce
-        lean={8}
-        stance={26}
-        arms={[{ angle: -115, length: 95, glove: BLUE }, { angle: -15, length: 125, glove: BLUE }]}
-      />
+      {/* The other agent has its own job: the round card, held high in the
+          corner. */}
+      <RoboBot x={620} w={190} base={RING.mat} happy arms={[{ angle: -110, length: 180 }, { angle: -70, length: 180 }]} />
+      <g transform="rotate(-4 620 560)">
+        <rect x={470} y={485} width={300} height={150} rx={18} fill={CREAM} stroke={INK} strokeWidth={10} />
+        <text x={620} y={582} textAnchor="middle" fontFamily={FONT_MONO} fontWeight={600} fontSize={64} fill={INK}>
+          ROUND 1
+        </text>
+      </g>
       <TerminalBot
         x={1085}
         w={220}
