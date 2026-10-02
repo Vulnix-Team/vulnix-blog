@@ -19,6 +19,7 @@ export const STAGE = {
   sage: { ground: "#c5d3c9", floor: "#b2c3b7" },
   oat: { ground: "#e6dcc8", floor: "#d6c9af" },
   peach: { ground: "#ffc6a8", floor: "#f5b08c" },
+  cream: { ground: "#f2f3ee", floor: "#e2e4da" },
 } as const;
 
 export function Stage({ tone, children }: { tone: keyof typeof STAGE; children: ReactNode }) {
