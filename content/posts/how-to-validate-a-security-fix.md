@@ -4,7 +4,7 @@ seoTitle: "How to Validate a Security Fix"
 description: "A practical protocol for security fix validation: preserve the original evidence, replay the exploit safely, and record a defensible closure decision."
 excerpt: "A merged patch is not proof of remediation. Validate the deployed control against the attack path that produced the finding."
 publishedAt: "2026-09-22"
-updatedAt: "2026-09-23"
+updatedAt: "2026-10-02"
 topic: "Exploit validation"
 keywords:
   - validate security fix
@@ -93,3 +93,21 @@ The supporting workflow is documented in [findings and reports](https://docs.vul
 7. Add or update regression coverage, then close the finding only when the record supports closure.
 
 A security patch is an implementation claim. Validation is the evidence that decides whether that claim holds in the system attackers can reach.
+
+## Frequently asked questions
+
+### How do you validate a security fix?
+
+Replay the original exploit against the deployed fix under the same conditions: the same target, identity, application state and request sequence. Check for the expected secure behavior, test only the nearby variants that exercise the same control, and record the result with its evidence.
+
+### Is a passing unit test enough to close a security finding?
+
+No. A unit test protects the intended behavior in code, but it may never meet the proxy rule, deployed identity policy or stale service that made exploitation possible. Only a retest of the running system shows whether the attack is now blocked.
+
+### What are the possible outcomes of a fix retest?
+
+Three: confirmed fixed, still vulnerable, and inconclusive. Inconclusive means a changed prerequisite, an unavailable environment, a safety limit or an unstable result prevented a reliable conclusion. The finding stays open until that is resolved.
+
+### Does validating a fix mean running a new penetration test?
+
+No. Fix validation is a focused check of the original path and the same security boundary, within the original safety limits. If the work grows beyond that control or asset, scope a separate assessment.
