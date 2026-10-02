@@ -1,5 +1,6 @@
 ---
 title: "How to Validate a Security Fix: Replay the Exploit Before Closing the Finding"
+seoTitle: "How to Validate a Security Fix"
 description: "A practical protocol for security fix validation: preserve the original evidence, replay the exploit safely, and record a defensible closure decision."
 excerpt: "A merged patch is not proof of remediation. Validate the deployed control against the attack path that produced the finding."
 publishedAt: "2026-09-22"
