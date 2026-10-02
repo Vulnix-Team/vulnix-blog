@@ -89,7 +89,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                   url: MAIN_SITE,
                   logo: `${MAIN_SITE}/vulnix-logo.png`,
                   description: "Vulnix is an AI penetration testing platform with continuous exploit validation.",
-                  sameAs: ["https://docs.vulnix.dev", "https://status.vulnix.dev"],
+                  sameAs: [
+                    "https://www.linkedin.com/company/vulnix-dev",
+                    "https://x.com/vulnix_dev",
+                    "https://github.com/Vulnix-Team",
+                    "https://docs.vulnix.dev",
+                    "https://status.vulnix.dev",
+                  ],
                   contactPoint: [
                     { "@type": "ContactPoint", contactType: "sales", email: "hello@vulnix.dev" },
                     { "@type": "ContactPoint", contactType: "customer support", email: "support@vulnix.dev" },

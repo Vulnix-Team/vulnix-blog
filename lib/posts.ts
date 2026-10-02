@@ -6,6 +6,10 @@ const POSTS_DIRECTORY = path.join(process.cwd(), "content", "posts");
 
 export type PostFrontmatter = {
   title: string;
+  // The <title> in search results, when `title` is too long for the ~60
+  // characters a result shows (" | Vulnix Blog" is added). The page and
+  // share cards keep the full title.
+  seoTitle?: string;
   description: string;
   excerpt: string;
   publishedAt: string;

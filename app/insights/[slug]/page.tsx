@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const cover = getArticleCover(post.slug);
   const image = `${SITE_URL}${cover.og}`;
   return {
-    title: post.title,
+    title: post.seoTitle ?? post.title,
     description: post.description,
     keywords: post.keywords,
     category: post.topic,

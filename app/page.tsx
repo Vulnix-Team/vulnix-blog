@@ -13,7 +13,8 @@ export default function HomePage() {
             Vulnix Blog
           </h1>
           <p className="max-w-[520px] font-[family-name:var(--font-marketing-body)] text-[16px] leading-[22.4px] text-pretty text-mk-fg/70 md:text-[18px] md:leading-[25.2px]">
-            Field notes on AI pentesting, exploit validation and application security.
+            Field notes on AI pentesting, exploit validation and application security, from the team
+            behind Vulnix, an AI penetration testing platform.
           </p>
         </header>
         <ArticleCatalog posts={posts} />
