@@ -31,6 +31,7 @@ const coversOnly = process.argv.includes("covers");
 
 // Cover composition -> article slug. Each master is 2400x1200 (src/covers).
 const COVERS = {
+  AiPenetrationTestingCover: "what-is-ai-penetration-testing",
   CodingAgentsCover: "can-coding-agents-replace-a-pentest",
   ScanningCover: "ai-pentesting-vs-vulnerability-scanning",
   ValidateFixCover: "how-to-validate-a-security-fix",

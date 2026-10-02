@@ -10,6 +10,8 @@ type ArticleCover = {
 };
 
 const ALT: Record<string, string> = {
+  "what-is-ai-penetration-testing":
+    "Dot, the Vulnix character, winks beside a big padlock it has just opened, the key still turned in the lock and a PROVEN tag hanging from the shackle",
   "ai-pentesting-vs-vulnerability-scanning":
     "Dot, the Vulnix character, carries one proven finding on its head while a scanner prints a long receipt of question marks",
   "can-coding-agents-replace-a-pentest":
